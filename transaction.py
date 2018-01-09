@@ -25,9 +25,15 @@ class transaction ():
     def sign(self, key):
         pass
 
-    def hash (self):
+    def compute_hash (self):
         """
             update hash of transaction
             :todo move to json representation instead of binary representation of object
         """
         self.hash = hashlib.sha256().upbate(bytes(self)).digest()
+    
+    def __getattribute__ (self, name):
+        if name == "hash":
+            if hash is None:
+                self.compute_hash ()
+        return object.__getattribute__(self, name)

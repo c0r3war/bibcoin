@@ -11,15 +11,23 @@ class Block:
     def __init__(self, prevblock=None):
         self.transactions = []
         self.prevblock = prevblock
-        self.timestamp = datetime.utcnow()
         self.nounce = 0
         self.hash = None
+        self.height = 0
+
+        # If preblock == None, then this is the first block of the chain, initialisze it as block 0
+        if prevblock is None:
+            self.timestamp = datetime(1974, 8, 18)
+            self.transactions.append(new transaction ("god", "me", 100))
+        else:
+            self.timestamp = datetime.utcnow()
     #
     # Private methods
     #
     def _hashTransactions(self):
         globalHash = hashlib.sha256()
         for transaction in self.transactions:
+            # @todo: implement a hsh method in block with caching
             theHash = transaction.hash if hasattr (transaction,"hash") else hashlib.sha256 ().update (bytes (transaction)).digest ()
             globalHash.update (theHash)
         return globalHash.digest ()
